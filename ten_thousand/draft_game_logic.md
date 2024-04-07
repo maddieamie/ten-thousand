@@ -1,3 +1,6 @@
+### This is a working draft to help me with my own thoughts
+
+```
 from collections import Counter
 import sys as _sys
 import random
@@ -95,3 +98,4 @@ class GameLogic:
 # if player rolls all 6 dice with scoring dice, add to player's limbo score to total score
 # if player rolls only not-scoring dice, then lose all points in limbo, next player turn
 # players cannot use multiple rolls to acculumate scoring dice, i.e. if you set a
+```

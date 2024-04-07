@@ -14,6 +14,7 @@ class GameLogic:
     def calculate_score(dice_roll_tuple):
         score = 0
         three_pairs = False
+        straight = False
 
         if len(dice_roll_tuple) > 6:
             raise ValueError("Invalid dice value encountered")
@@ -36,6 +37,7 @@ class GameLogic:
 
             if all(score_dictionary[num] == 1 for num in range(1, 7)):
                 score += 1500  # Straight
+                straight = True
 
             # Check for three pairs
             if sum(1 for count in score_dictionary.values() if count == 2) == 3:
@@ -65,7 +67,7 @@ class GameLogic:
                 else:
                     score += (num * 100)
 
-            if count < 3 and three_pairs is False:
+            if count < 3 and three_pairs is False and straight is False:
                 if num == 1:
                     score += count * 100
                 if num == 5:
