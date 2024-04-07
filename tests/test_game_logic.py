@@ -33,8 +33,10 @@ def test_all_valid_dice_rolls(num_dice, expected_length):
         ((5, 5), 100),
         ((1, 5, 5), 200),
         ((5, 1, 1), 250),
+        ((5, 5, 5, 1), 600),
         ((5, 5, 1, 1), 300),
         ((5, 5, 1, 1, 6), 300),
+        ((1, 1, 1, 5), 1050),
         ((5, 5, 5, 1, 2), 600),
         ((5, 5, 5, 1, 6, 3), 600),
         ((3, 3, 3, 1), 400),
@@ -46,10 +48,25 @@ def test_all_valid_dice_rolls(num_dice, expected_length):
         ((1, 1, 5, 5, 6, 6), 1500),
         ((1, 1, 1, 5, 5, 5), 1500),
         ((1, 1, 1, 3, 3, 3), 1300),
-        ((2, 2, 2, 5, 5, 5), 900)
+        ((2, 2, 2, 5, 5, 5), 700)
     ],
 )
-def test_edge_cases_in_range(test_input, expected):
+def test_edge_cases_in_range_one_and_five(test_input, expected):
     actual = GameLogic.calculate_score(test_input)
     assert actual == expected
 
+
+@pytest.mark.parametrize(
+    "test_input,expected",
+    [
+        ((1, 1, 5, 5, 6, 6), 1500),
+        ((2, 2, 2, 2, 3, 3), 400),
+        ((5, 5, 5, 5, 3, 3), 1000),
+        ((2, 2, 4, 4, 6, 6), 1500),
+        ((1, 1, 1, 1, 3, 3), 2000),
+        ((3, 3, 3, 3, 3, 3), 1200)
+    ],
+)
+def test_edge_cases_in_pairs(test_input, expected):
+    actual = GameLogic.calculate_score(test_input)
+    assert actual == expected

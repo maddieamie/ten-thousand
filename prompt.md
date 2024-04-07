@@ -657,3 +657,218 @@ def calculate_score(dice_roll_tuple):
     return score
 
 ```
+7. I want to make a list that keeps track of the amount of each number that goes into a function in a tuple. Then, I want to loop through that array, use the amounts of each number, and then perform more math based on those quantities
+
+
+7. **Returned Response**
+
+Sure, you can achieve this in Python using dictionaries to keep track of the counts of each number in a tuple, and then loop through the dictionary to perform further calculations based on those counts. Here's an example:
+```
+def process_tuple(t):
+    # Initialize a dictionary to keep track of counts
+    count_dict = {}
+    
+    # Iterate through the tuple and update counts
+    for num in t:
+        if num in count_dict:
+            count_dict[num] += 1
+        else:
+            count_dict[num] = 1
+    
+    # Perform calculations based on counts
+    for num, count in count_dict.items():
+        # Example: multiply each number by its count
+        result = num * count
+        print(f"Number: {num}, Count: {count}, Result: {result}")
+        # Perform more calculations based on the count if needed
+
+# Example tuple
+my_tuple = (1, 2, 3, 1, 2, 1)
+
+# Process the tuple
+process_tuple(my_tuple)
+
+```
+
+8. Okay, I want the dictionary to only have numbers 1-6, and I want to perform scoring math based on each amount of the numbers with conditions 
+
+8. **Returned Response**
+Sure, let's modify the code to accommodate your requirements. We'll create a dictionary with keys from 1 to 6, and then perform scoring based on conditions. Here's the updated code:
+```
+def process_tuple(t):
+    # Initialize a dictionary to keep track of counts
+    count_dict = {i: 0 for i in range(1, 7)}
+    
+    # Iterate through the tuple and update counts
+    for num in t:
+        if num in count_dict:
+            count_dict[num] += 1
+    
+    # Perform scoring based on counts
+    total_score = 0
+    for num, count in count_dict.items():
+        # Example: scoring based on conditions
+        if count == 3:  # If three of the same number
+            total_score += 10 * num
+        elif count == 2:  # If two of the same number
+            total_score += 5 * num
+        elif count == 1:  # If only one of the number
+            total_score += num
+        # Add more conditions as needed
+    
+    return total_score
+
+# Example tuple
+my_tuple = (1, 2, 3, 1, 2, 1)
+
+# Process the tuple and get the total score
+score = process_tuple(my_tuple)
+print("Total Score:", score)
+
+```
+
+9. Okay, here is my code. Can you help me find the conditions for pairs and straights and see if they are valid here? 
+```
+class GameLogic:
+    def __init__(self):
+        self.amount_of_dice = range(0, 6 + 1)
+        self.dice_sides = range(1, 6 + 1)
+        self.dice_set_aside_to_score = 0
+        self.dice_in_limbo = 0
+        self.score_player_1 = 0
+        self.score_player_2 = 0
+
+    @staticmethod
+    def calculate_score(dice_roll_tuple):
+        score = 0
+
+        score_dictionary = {
+            1: 0,
+            2: 0,
+            3: 0,
+            4: 0,
+            5: 0,
+            6: 0
+        }
+
+        # Iterate through the tuple and update counts
+        for num in dice_roll_tuple:
+            if num in score_dictionary:
+                score_dictionary[num] += 1
+    # put in a raise error here for kind of error for wrong input
+
+        # Perform scoring based on counts
+        for num, count in score_dictionary.items():
+# is there a way to make the conditions more efficient? or is this just one loop?
+            if count == 1 is 6: #if the amount of times count is equal to 1 is 6
+                score += 1500  # Straight
+            elif count == 2 is 3: #if the amount of times count is equal to 2 is 3
+                score += 1500 # 3 pairs
+            elif count == 6:
+                if num == 1:
+                    score += (num * 1000) * 4
+                else:
+                    score += (num * 100) * 4
+            elif count == 5:
+                if num == 1:
+                    score += (num * 1000) * 3
+                else:
+                    score += (num * 100) * 3
+            elif count == 4:
+                if num == 1:
+                    score += (num * 1000) * 2
+                else:
+                    score += (num * 100) * 2
+            elif count == 3:
+        # will this work if there are two triples? does it count both instances of 3?
+                if num == 1:
+                    score += 1000
+                else:
+                    score += (num * 100)
+
+                    # this still isn't working, wtf, how do I make it check for this?
+            if count < 3:
+                if num == 1:
+                    score += count * 100
+                if num == 5:
+                    score += count * 50
+                if num != 1 or 5:
+                    score += 0
+
+        print(score_dictionary)
+        print(score)
+
+        return score
+```
+
+9. **Returned Response**
+
+It looks like you are trying to implement scoring logic for a dice game using a tuple representing dice rolls. Let's review your existing code and provide guidance on improving the conditions for pairs and straights, and also address some other issues in your implementation.
+
+Checking for Straights:
+A straight typically refers to all six dice showing different values (1 through 6). You can check for this condition by ensuring that each number from 1 to 6 appears exactly once in the dice_roll_tuple.
+
+Checking for Pairs (3 Pairs):
+For three pairs, you need exactly three pairs of numbers. This means that after counting the occurrences of each number, you should have exactly three numbers that appear twice (count == 2).
+
+Efficient Condition Checking:
+Your current implementation is checking each possible count individually. You can simplify this by first counting the occurrences of each number and then evaluating these counts against your scoring conditions.
+
+Here's an updated version of your calculate_score method with these improvements:
+```class GameLogic:
+    def __init__(self):
+        self.amount_of_dice = range(0, 6 + 1)
+        self.dice_sides = range(1, 6 + 1)
+        self.dice_set_aside_to_score = 0
+        self.dice_in_limbo = 0
+        self.score_player_1 = 0
+        self.score_player_2 = 0
+
+    @staticmethod
+    def calculate_score(dice_roll_tuple):
+        score = 0
+
+        score_dictionary = {1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0}
+
+        # Count occurrences of each number in the tuple
+        for num in dice_roll_tuple:
+            if num in score_dictionary:
+                score_dictionary[num] += 1
+            else:
+                raise ValueError("Invalid dice value encountered")  # Raise error for invalid input
+
+        # Check for straight (all numbers 1 through 6)
+        if all(score_dictionary[num] == 1 for num in range(1, 7)):
+            score += 1500  # Straight
+
+        # Check for three pairs
+        if sum(1 for count in score_dictionary.values() if count == 2) == 3:
+            score += 1500  # Three pairs
+
+        # Calculate score based on counts of each number
+        for num, count in score_dictionary.items():
+            if count >= 3:
+                if num == 1:
+                    score += 1000 * (count // 3)
+                else:
+                    score += num * 100 * (count // 3)
+
+            if count < 3:
+                if num == 1:
+                    score += count * 100
+                elif num == 5:
+                    score += count * 50
+
+        print(score_dictionary)
+        print(score)
+
+        return score
+
+# Test the GameLogic class
+game = GameLogic()
+dice_roll = (1, 2, 3, 4, 5, 6)  # Testing a straight (should score 1500)
+game.calculate_score(dice_roll)
+
+dice_roll = (1, 1, 2, 2, 3, 3)  # Testing three pairs (should score 1500)
+game.calculate_score(dice_roll)
+```
