@@ -7,7 +7,7 @@
 
 """
 import pytest
-from ten_thousand.game_logic import GameLogic
+from ten_thousand.draft_game_logic import GameLogic
 
 pytestmark = [pytest.mark.version_1]
 
