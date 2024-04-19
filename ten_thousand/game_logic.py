@@ -1,7 +1,7 @@
 import random
 
-
 class GameLogic:
+
     def __init__(self):
         self.amount_of_dice = range(0, 6 + 1)
         self.dice_sides = range(1, 6 + 1)
