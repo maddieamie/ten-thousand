@@ -1,24 +1,18 @@
 
-# LAB - Class 06
+# LAB - Class 08
 ## Project: Ten Thousand Dice Game in Terminal
 ### Author: Maddie Amelia Lewis
 
 ### Links and Resources
 
-back-end server url (when applicable)
-front-end application (when applicable)
+Game online: http://www.playonlinedicegames.com/farkle
+Rules of the game: https://en.wikipedia.org/wiki/Dice_10000
+This is version of the game where you can only bank points once per round, and score is calculated as soon as the dice are set aside. 
+
+
 ### Setup
 
-.env requirements (where applicable)
-
-i.e.
-
-PORT - Port Number
-DATABASE_URL - URL to the running Postgres instance/db
-How to initialize/run your application (where applicable)
-
-e.g. python main.py
-How to use your library (where applicable)
+python3 game.py
 
 ### Tests
 

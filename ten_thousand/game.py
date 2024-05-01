@@ -1,5 +1,5 @@
 from ten_thousand.game_logic import GameLogic
-from ten_thousand.mock_roller import play_dice
+
 import sys
 
 
@@ -30,27 +30,33 @@ def play(roller=GameLogic.roll_dice):
         new_game.change_round()
         new_game.roll_dice(6)
         while new_game.dice_left_to_roll > 0:
-            print('Enter dice to keep, or (q)uit:')
-
-            player_input = input('> ')
-            if player_input == 'q':
-                quit_program(new_game.score_player_1)
-            else:
-                new_game.keep_dice(player_input)
-
-            print('(r)oll again, (b)ank your points or (q)uit:')
-
-            player_input_2 = input('> ')
-            if player_input_2 == 'r':
-                new_game.roll_dice(new_game.dice_left_to_roll)
-            elif player_input_2 == 'b':
-                new_game.update_score()
+            new_game.check_for_farkle()
+            if new_game.dice_left_to_roll == 0:
                 break
-            elif player_input_2 == 'q':
-                quit_program(new_game.score_player_1)
+            else:
+                print('Enter dice to keep, or (q)uit:')
+
+                player_input = input('> ')
+                if player_input == 'q':
+                    quit_program(new_game.score_player_1)
+                else:
+                    if new_game.keep_dice(player_input) is True:
+                        continue
+                    else:
+
+                        print('(r)oll again, (b)ank your points or (q)uit:')
+
+                        player_input_2 = input('> ')
+                        if player_input_2 == 'r':
+                            new_game.roll_dice(new_game.dice_left_to_roll)
+                        elif player_input_2 == 'b':
+                            new_game.update_score()
+                            break
+                        elif player_input_2 == 'q':
+                            quit_program(new_game.score_player_1)
 
 
 if __name__ == '__main__':
     first_welcome()
-    play()
+
 

@@ -7,7 +7,6 @@ class GameLogic:
     def __init__(self):
         self.amount_of_dice = range(0, 6 + 1)
         self.dice_sides = range(1, 6 + 1)
-        self.dice_set_aside_to_score = 0
         self.dice_left_to_roll = 6
         self.dice_just_rolled = {
             1: 0,
@@ -17,6 +16,7 @@ class GameLogic:
             5: 0,
             6: 0
         }
+        self.dice_roll = tuple
         self.dice_to_calculate_score = {
             1: 0,
             2: 0,
@@ -100,21 +100,26 @@ class GameLogic:
         return score
 
     def roll_dice(self, num_of_dice):
-        # reset previous dice roll
+        # reset previous dice rolls
+
         for key in self.dice_just_rolled:
             self.dice_just_rolled[key] = 0
+
+        for key in self.dice_to_calculate_score:
+            self.dice_to_calculate_score[key] = 0
+
         # number of dice being rolled to return to user
         dice_num = num_of_dice
         # roll dice
-        dice_roll = tuple(random.randint(1, 6) for _ in range(0, dice_num))
+        self.dice_roll = tuple(random.randint(1, 6) for _ in range(0, dice_num))
         # keep track of dice last rolled for logic later
-        for num in dice_roll:
+        for num in self.dice_roll:
             self.dice_just_rolled[num] += 1
 
-        dice_roll_return = " ".join(map(str, dice_roll))
+        dice_roll_return = " ".join(map(str, self.dice_roll))
 
-        return print(f'''Rolling {dice_num} dice...
-*** {dice_roll_return} ***''')
+        return (print(f'''Rolling {dice_num} dice...
+*** {dice_roll_return} ***'''))
 
     def increment_round(self):
         # increments game round number only
@@ -123,7 +128,6 @@ class GameLogic:
 
     def change_round(self):
         # resets all the values used in a round
-        self.dice_set_aside_to_score = 0
         self.dice_left_to_roll = 6
         self.unbanked_points = 0
         self.increment_round()
@@ -133,37 +137,67 @@ class GameLogic:
         new_list = [int(x) for x in current_input if x.isdigit()]
         return tuple(new_list)
 
-    def keep_dice(self, input):
-        # this line needs to be refined for different inputs
-        # comparison to rolled dice needs to come here as well
-        input_tuple = self.create_tuple(input)
+    def check_for_farkle(self):
+        if self.calculate_score(self.dice_roll) == 0:
+            print(f'''
+****************************************
+**        Zilch!!! Round over         **
+****************************************
+You banked 0 points in round {self.round}
+Total score is {self.score_player_1} points''')
+            self.dice_left_to_roll = 0
+        else:
+            pass
 
+    def keep_dice(self, new_input):
+
+        # filter input and put into a tuple
+        input_tuple = self.create_tuple(new_input)
+
+        # reset the input dictionary in class
+        for key in self.dice_to_calculate_score:
+            self.dice_to_calculate_score[key] = 0
+
+        # add input to dictionary held in class
         for num in input_tuple:
             self.dice_to_calculate_score[num] += 1
-        # if self.dice_to_calculate_score.items() <= self.dice_just_rolled.items()
-        if len(input_tuple) < 6:
-            self.dice_set_aside_to_score += len(input_tuple)
-            self.dice_left_to_roll -= len(input_tuple)
-            self.unbanked_points += self.calculate_score(input_tuple)
-            if self.unbanked_points == 0:
-                # farkle function
-                return print('No points scored! Next round.')
+
+        # comparison for cheating/typos
+        # print(self.dice_to_calculate_score)
+        # print(self.dice_just_rolled)
+        # all(dict1[k] == dict2[k] for k in dict1)
+        if all(self.dice_to_calculate_score[k] <= self.dice_just_rolled[k] for k in self.dice_to_calculate_score):
+            # dice left to roll
+            if len(input_tuple) < 6:
+                self.dice_left_to_roll -= len(input_tuple)
+                self.unbanked_points += self.calculate_score(input_tuple)
+                print(f'You have {self.unbanked_points} unbanked points and {self.dice_left_to_roll} dice remaining')
+                return False
+            # hot dice and the person noticed they had hot dice
+            elif len(input_tuple) == 6:
+                self.unbanked_points += self.calculate_score(input_tuple)
+                print(f'You have {self.unbanked_points} unbanked points and {self.dice_left_to_roll} dice remaining')
+                return False
+            # unforeseen input missed by the tuple filter function create_tuple
             else:
-                return print(f'You have {self.unbanked_points} unbanked points and {self.dice_left_to_roll} dice remaining')
-        elif len(input_tuple) == 6:
-            self.unbanked_points += self.calculate_score(input_tuple)
-            return print(f'You have {self.unbanked_points} unbanked points and {self.dice_left_to_roll} dice remaining')
+                print('Invalid input format. Please try again.')
+                return True
         else:
-            return print('Invalid input format. Please try again.')
+            # feedback if your input dictionary doesn't match the dice roll dictionary
+            print('Cheater!!! Or possibly made a typo...')
+            dice_roll_return = " ".join(map(str, self.dice_roll))
+            print(f'*** {dice_roll_return} ***')
+            return True
 
     def update_score(self):
         self.score_player_1 += self.unbanked_points
+
         return print(f'''You banked {self.unbanked_points} points in round {self.round}
 Total score is {self.score_player_1} points''')
 
 
-    # change return on update score/ roll again after using all 6 dice the first time
-    # change round and reset when user rolls no scoring dice (unbanked_points = 0?)
+
+
 
 
 
