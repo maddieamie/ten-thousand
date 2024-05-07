@@ -3,6 +3,7 @@ from ten_thousand.flo import diff
 from ten_thousand.game import first_welcome
 
 
+
 pytestmark = [pytest.mark.version_3]
 
 

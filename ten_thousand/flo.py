@@ -1,6 +1,7 @@
 import builtins
 import difflib
 import sys
+from ten_thousand.mock_roller import MockRoller
 
 
 def diff(game_play_func, path="", sample=""):
@@ -8,7 +9,6 @@ def diff(game_play_func, path="", sample=""):
 
     Args:
         game_play_func (function): function that plays game.
-            MUST have key word argument 'roller'
         path (str, optional): File path to a simulation text tile. Defaults to "".
         sample (str, optional): Simulation text to use if no path provided.
             Defaults to "".
@@ -27,6 +27,8 @@ def diff(game_play_func, path="", sample=""):
 
     # inner function to mock print functionality
     def mock_print(*args):
+
+        args = str(args)
 
         nonlocal text
 
@@ -66,7 +68,7 @@ def diff(game_play_func, path="", sample=""):
     builtins.input = mock_input
 
     try:
-        game_play_func(roller=mock_roller)
+        game_play_func(sim=True)
     except AssertionError:
         real_print("Simulation failure.")
     except SystemExit:

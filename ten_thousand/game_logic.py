@@ -16,7 +16,7 @@ class GameLogic:
             5: 0,
             6: 0
         }
-        self.dice_roll = tuple
+        self.dice_roll = ()
         self.dice_to_calculate_score = {
             1: 0,
             2: 0,
@@ -31,8 +31,10 @@ class GameLogic:
         self.score_computer = 0
         self.round = 0
 
+
     @staticmethod
     def calculate_score(dice_roll_tuple):
+
         score = 0
         three_pairs = False
         straight = False
@@ -105,8 +107,9 @@ class GameLogic:
         for key in self.dice_just_rolled:
             self.dice_just_rolled[key] = 0
 
-        for key in self.dice_to_calculate_score:
-            self.dice_to_calculate_score[key] = 0
+        # might be unnecessary because it's in calculate_score
+        # for key in self.dice_to_calculate_score:
+        #     self.dice_to_calculate_score[key] = 0
 
         # number of dice being rolled to return to user
         dice_num = num_of_dice
