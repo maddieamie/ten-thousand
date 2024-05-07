@@ -64,6 +64,6 @@ def play(roller, new_game):
 
 
 if __name__ == '__main__':
-    first_welcome(sim=True)
+    first_welcome()
 
 
