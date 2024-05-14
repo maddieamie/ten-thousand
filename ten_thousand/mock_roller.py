@@ -1,13 +1,17 @@
 from ten_thousand.game_logic import GameLogic
 
 
-class MockRoller(GameLogic):
-
-    # def __init__(self, dice_just_rolled, dice_to_calculate_score, dice_roll):
-    def __init__(self, dice_just_rolled, dice_roll):
-        super().__init__()
-        self.dice_just_rolled_mock = dice_just_rolled
-        self.dice_roll_mock = dice_roll
+class MockRoller:
+    def __init__(self):
+        self.dice_just_rolled_mock = {
+            1: 0,
+            2: 0,
+            3: 0,
+            4: 0,
+            5: 0,
+            6: 0
+        }
+        self.dice_roll_mock = ()
         # cheat and fix sim
         self.rolls1 = [(5, 2, 3, 5, 4, 2), (5, 2, 3, 5, 4, 2)]
         # bank first for two rounds sim
@@ -65,9 +69,9 @@ class MockRoller(GameLogic):
             self.dice_just_rolled_mock[num] += 1
 
         dice_roll_return = " ".join(map(str, self.dice_roll_mock))
-
-        return print(f'''Rolling {dice_num} dice...
+        print(f'''Rolling {dice_num} dice...
 *** {dice_roll_return} ***''')
+        return self.dice_roll_mock
 
 
 
