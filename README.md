@@ -1,5 +1,8 @@
 
 # LAB - Class 08
+
+[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/maddieamie/ten-thousand/HEAD)
+
 ## Project: Ten Thousand Dice Game in Terminal
 ### Author: Maddie Amelia Lewis
 
