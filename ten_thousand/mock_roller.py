@@ -1,8 +1,33 @@
-from ten_thousand.game_logic import GameLogic
-
 
 class MockRoller:
+    """
+       A class to simulate predefined dice rolls for the Ten Thousand game.
+
+       Attributes
+       ----------
+       dice_just_rolled_mock : dict
+           A dictionary to keep track of the count of each dice value just rolled.
+       dice_roll_mock : tuple
+           A tuple to store the current dice roll.
+       rolls1 : list of tuples
+           Predefined dice rolls for the first simulation scenario: version_3/cheat_and_fix.sim.txt
+       rolls2 : list of tuples
+           Predefined dice rolls for the second simulation scenario: version_2/bank_first_for_two_rounds.sim.txt
+       rolls3 : list of tuples
+           Predefined dice rolls for the third simulation scenario: version_2/bank_one_roll_then_quit.sim.txt
+       rolls4 : list of tuples
+           Predefined dice rolls for the fourth simulation scenario: version_2/one_and_done.sim.txt
+       rolls5 : list of tuples
+           Predefined dice rolls for the fifth simulation scenario: version_3/hot_dice.sim.txt
+       rolls6 : list of tuples
+           Predefined dice rolls for the sixth simulation scenario: version_3/repeat_roller.sim.txt
+       rolls7 : list of tuples
+           Predefined dice rolls for the seventh simulation scenario: version_3/zilcher.sim.txt
+       """
     def __init__(self):
+        """
+       Initialize a new MockRoller instance.
+       """
         self.dice_just_rolled_mock = {
             1: 0,
             2: 0,
@@ -27,14 +52,20 @@ class MockRoller:
         # zilch sim
         self.rolls7 = [(1, 2, 5, 1, 2, 1), (4, 4), (1, 1, 2, 5, 1, 6)]
 
-        # so, when I call mock_roller in the game, I can call which sim
-        # Can I change up test_sim to put in the roll_number param for me & use
-        # mock_roller without hard-coding it in game_logic for the sim?
-
     def mock_roller(self, roll_number):
-        # ideally, this function updates the state of the lists in the MockRoller class
-        # AND uses the state of the GameLogic to update the dice_roll logic implemented
-        # in the regular roll_dice function
+        """
+       Simulate a dice roll based on the given roll number.
+
+       Parameters
+       ----------
+       roll_number : int
+           The simulation scenario to use for the dice roll.
+
+       Returns
+       -------
+       tuple
+           The current simulated dice roll.
+       """
         roll_list = []
         if roll_number == 1:
             roll_list = self.rolls1
@@ -51,20 +82,17 @@ class MockRoller:
         elif roll_number == 7:
             roll_list = self.rolls7
 
-        # reset previous dice rolls in GameLogic State
+        # reset previous dice rolls in MockRoller state
 
         for key in self.dice_just_rolled_mock:
             self.dice_just_rolled_mock[key] = 0
 
-        # for key in self.dice_to_calculate_score:
-        #     self.dice_to_calculate_score[key] = 0
-
-        # roll fake dice, updates state of MockRoller list
+        # roll fake dice
         self.dice_roll_mock = roll_list.pop(0)
-        # updates state of GameLogic
+        # updates state of MockRoller to bubble up to NewGame
         dice_num = len(self.dice_roll_mock)
 
-        # keep track of dice last rolled for GameLogic later
+        #  updates state of MockRoller to bubble up to NewGame
         for num in self.dice_roll_mock:
             self.dice_just_rolled_mock[num] += 1
 
